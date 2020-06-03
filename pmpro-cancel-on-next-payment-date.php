@@ -28,8 +28,7 @@ function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $o
 
 		//figure out the next payment timestamp
     if(empty($level) || (!empty($level->enddate) && $level->enddate != '0000-00-00 00:00:00')) {
-			//level already has an end date. set to false so we really cancel.
-      echo "((here))";
+			//level already has an end date. set to false so we really cancel.      
       $pmpro_next_payment_timestamp = false;
 		} elseif(!empty($order) && $order->gateway == "stripe") {
 			//if stripe, try to use the API
