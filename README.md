@@ -14,12 +14,12 @@ For more information please visit [the Add On documentation page for this plugin
 ## Installation ##
 For detailed installation steps, visit the [documentation](https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date) page.
 
-1. Download the current development ZIP file directly: `https://github.com/strangerstudios/repo-slug/archive/dev.zip`
+1. Download the current development ZIP file directly: `https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/archive/dev.zip`
 
 **Please ensure that once installing this version of the plugin to remove `-dev` from the plugin's folder name.**
 
 ## Bugs ##
-If you find an issue/bug, let us know by [creating a detailed GitHub issue](https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues/new).
+If you find an issue/bug, let us know by [creating a detailed GitHub issue](https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues/new/choose).
 
 ## Support ##
 This is a developer's portal for Paid Memberships Pro - Cancel on Next Payment Date. We do not offer support on this channel. **Any support related questions should be directed to [our website](https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date).**
@@ -29,7 +29,7 @@ We encourage and welcome any contribution to Paid Memberships Pro - Cancel on Ne
 
 There are various **ways to the help development** of Paid Memberships Pro - Cancel on Next Payment Date:
 
-1. Report [bugs/issues](https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues/new) on GitHub.
+1. Report [bugs/issues](https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues/new/choose) on GitHub.
 2. Work on any issues by submitting a Pull Request.
 
 Here are some ways for **non-developers to contribute** to Paid Memberships Pro - Cancel on Next Payment Date:
