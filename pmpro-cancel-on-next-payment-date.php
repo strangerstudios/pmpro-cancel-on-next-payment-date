@@ -2,8 +2,8 @@
 /*
  Plugin Name: Paid Memberships Pro - Cancel on Next Payment Date
  Plugin URI: https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date
- Description: Change PMPro membership cancellation to set expiration date for next payment instead of cancelling immediately.
- Version: .2
+ Description: Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
+ Version: 0.2
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
  Text Domain: pmpro-cancel-on-next-payment-date
@@ -13,7 +13,7 @@
 function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $old_levels, $cancel_level ) {
 	global $pmpro_pages, $wpdb, $pmpro_stripe_event, $pmpro_next_payment_timestamp;
 
-  //are we on the cancel page and cancelling a level?
+	//are we on the cancel page and cancelling a level?
 	if($level_id == 0 && (is_page($pmpro_pages['cancel']) || (is_admin() && (empty($_REQUEST['from']) || $_REQUEST['from'] != 'profile')))) {
     // Default to false. In case we're changing membership levels multiple times during this page load.
     $pmpro_next_payment_timestamp = false;
@@ -26,7 +26,7 @@ function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $o
 		if(!empty($order) && !empty($order->membership_id))
 			$level = $wpdb->get_row("SELECT * FROM $wpdb->pmpro_memberships_users WHERE membership_id = '" . $order->membership_id . "' AND user_id = '" . $user_id . "' ORDER BY id DESC LIMIT 1");
 
-		//figure out the next payment timestamp
+	//figure out the next payment timestamp
     if(empty($level) || (!empty($level->enddate) && $level->enddate != '0000-00-00 00:00:00')) {
 			//level already has an end date. set to false so we really cancel.      
       $pmpro_next_payment_timestamp = false;
@@ -165,3 +165,18 @@ function pmproconpd_pmpro_email_body($body, $email) {
 	return $body;
 }
 add_filter("pmpro_email_body", "pmproconpd_pmpro_email_body", 10, 2);
+
+/**
+	Function to add links to the plugin row meta
+ */
+function pmproconpd_plugin_row_meta($links, $file) {
+	if ( strpos( $file, 'pmpro-cancel-on-next-payment-date.php' ) !== false ) {
+		$new_links = array(
+			'<a href="' . esc_url('https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date/')  . '" title="' . esc_attr__( 'View Documentation', 'pmpro-cancel-on-next-payment-date' ) . '">' . esc_html__( 'Docs', 'pmpro-cancel-on-next-payment-date' ) . '</a>',
+			'<a href="' . esc_url('https://www.paidmembershipspro.com/support/') . '" title="' . esc_attr__( 'Visit Customer Support Forum', 'pmpro-cancel-on-next-payment-date' ) . '">' . esc_html__( 'Support', 'pmpro-cancel-on-next-payment-date' ) . '</a>',
+		);
+		$links = array_merge( $links, $new_links );
+	}
+	return $links;
+}
+add_filter( 'plugin_row_meta', 'pmproconpd_plugin_row_meta', 10, 2 );
