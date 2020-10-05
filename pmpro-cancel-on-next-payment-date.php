@@ -119,7 +119,9 @@ function pmproconpd_pmpro_after_change_membership_level($level_id, $user_id) {
       add_action("pmpro_after_change_membership_level", "pmproconpd_pmpro_after_change_membership_level", 10, 2);
 
 			//add the action back to set the default level on cancels
-			add_action('pmpro_after_change_membership_level', 'pmpro_after_change_membership_level_default_level', 10, 2);
+			if ( function_exists( 'pmpro_after_change_membership_level_default_level' ) ) {
+				add_action('pmpro_after_change_membership_level', 'pmpro_after_change_membership_level_default_level', 10, 2);
+			}
 
 			//change message shown on cancel page
 			add_filter("gettext", "pmproconpd_gettext_cancel_text", 10, 3);
