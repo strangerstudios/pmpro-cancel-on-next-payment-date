@@ -13,10 +13,10 @@
 /*
 	Load plugin textdomain.
 */
-function pmprorh_load_textdomain() {
+function pmprorh_load_conpd() {
   load_plugin_textdomain( 'pmpro-cancel-on-next-payment-date', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 }
-add_action( 'plugins_loaded', 'pmprorh_load_textdomain' );
+add_action( 'plugins_loaded', 'pmprorh_load_conpd' );
 
 //before cancelling, save the next_payment_timestamp to a global for later use.
 function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $old_levels, $cancel_level ) {
