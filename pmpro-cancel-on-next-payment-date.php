@@ -55,6 +55,9 @@ function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $o
 			if(!empty($_POST['next_payment_date']) && $_POST['next_payment_date'] != 'N/A') {
 				//cancel initiated from IPN
 				$pmpro_next_payment_timestamp = strtotime($_POST['next_payment_date'], current_time('timestamp'));
+			} elseif ( ! empty($_POST['next_payment_date']) && $_POST['next_payment_date'] == 'N/A' ) {
+				//use built in PMPro function to guess next payment date
+				$pmpro_next_payment_timestamp = pmpro_next_payment($user_id);
 			} else {
 				//cancel initiated from PMPro
 				$pmpro_next_payment_timestamp = PMProGateway_paypalexpress::pmpro_next_payment("", $user_id, "success");
