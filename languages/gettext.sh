@@ -1,4 +1,3 @@
-# Change every instance of pmpro-cancel-on-next-payment-date below to match your actual plugin slug
 #---------------------------
 # This script generates a new pmpro.pot file for use in translations.
 # To generate a new pmpro-cancel-on-next-payment-date.pot, cd to the main /pmpro-cancel-on-next-payment-date/ directory,
