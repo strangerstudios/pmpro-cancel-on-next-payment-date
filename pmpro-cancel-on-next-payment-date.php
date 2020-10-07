@@ -7,7 +7,16 @@
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
  Text Domain: pmpro-cancel-on-next-payment-date
+ Domain Path: /languages
 */
+
+/*
+	Load plugin textdomain.
+*/
+function pmproconpd_load_text_domain() {
+  load_plugin_textdomain( 'pmpro-cancel-on-next-payment-date', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
+}
+add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
 
 //before cancelling, save the next_payment_timestamp to a global for later use.
 function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $old_levels, $cancel_level ) {
@@ -28,7 +37,7 @@ function pmproconpd_pmpro_before_change_membership_level($level_id, $user_id, $o
 
 	//figure out the next payment timestamp
     if(empty($level) || (!empty($level->enddate) && $level->enddate != '0000-00-00 00:00:00')) {
-			//level already has an end date. set to false so we really cancel.      
+			//level already has an end date. set to false so we really cancel.
       $pmpro_next_payment_timestamp = false;
 		} elseif(!empty($order) && $order->gateway == "stripe") {
 			//if stripe, try to use the API
@@ -141,7 +150,7 @@ function pmproconpd_gettext_cancel_text($translated_text, $text, $domain) {
 
   if(($domain == "pmpro" || $domain == "paid-memberships-pro") && $text == "Your membership has been cancelled.") {
 		global $current_user;
-		$translated_text = "Your recurring subscription has been cancelled. Your active membership will expire on " . date(get_option("date_format"), $pmpro_next_payment_timestamp) . ".";
+		$translated_text = sprintf( __( 'Your recurring subscription has been cancelled. Your active membership will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), date( get_option( 'date_format' ), $pmpro_next_payment_timestamp ) );
 	}
 
 	return $translated_text;
@@ -157,7 +166,8 @@ function pmproconpd_pmpro_email_body($body, $email) {
 		if(!empty($user_id)) {
 			//if the date in the future?
 			if($pmpro_next_payment_timestamp - current_time( 'timestamp' ) > 0) {
-				$body .= "<p>Your access will expire on " . date(get_option("date_format"), $pmpro_next_payment_timestamp) . ".</p>";
+				$expiry_date = date( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+				$body .= '<p>' . sprintf( __( 'Your access will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), $expiry_date ) . '</p>';
 			}
 		}
 	}
