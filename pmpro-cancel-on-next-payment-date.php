@@ -23,7 +23,7 @@ add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
  *
  */
 function pmproconpd_pmpro_before_change_membership_level( $level_id, $user_id, $old_levels, $cancel_level ) {
-	global $pmpro_pages, $wpdb, $pmpro_stripe_event, $pmpro_next_payment_timestamp;
+	global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp;
 
 	// Are we on the cancel page and cancelling a level?
 	if ( $level_id == 0 && ( is_page( $pmpro_pages['cancel'] ) || ( is_admin() && ( empty($_REQUEST['from'] ) || $_REQUEST['from'] != 'profile' ) ) ) ) {
@@ -47,7 +47,7 @@ function pmproconpd_pmpro_before_change_membership_level( $level_id, $user_id, $
 			$pmpro_next_payment_timestamp = PMProGateway_stripe::pmpro_next_payment( '', $user_id, 'success' );
 		} elseif ( ! empty( $order ) && $order->gateway == 'paypalexpress' ) {
 			// If PayPal, try to use the API.
-			if (  !empty( $_POST['next_payment_date'] ) && $_POST['next_payment_date'] != 'N/A' ) {
+			if (  ! empty( $_POST['next_payment_date'] ) && $_POST['next_payment_date'] != 'N/A' ) {
 				// Cancellation is being initiated from the IPN.
 				$pmpro_next_payment_timestamp = strtotime( $_POST['next_payment_date'], current_time('timestamp' ) );
 			} elseif ( ! empty( $_POST['next_payment_date'] ) && $_POST['next_payment_date'] == 'N/A' ) {
