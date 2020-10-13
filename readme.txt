@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: pmpro, membership, cancellation
 Requires at least: 4.0
 Tested up to: 5.5.1
-Stable tag: 0.2
+Stable tag: 0.3
 
 Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
 
@@ -31,5 +31,5 @@ Please post it in the issues section of GitHub and we'll fix it as soon as we ca
 
 == Changelog ==
 
-= 0.2 - 2020-10-XX =
+= 0.3 - 2020-10-13 =
 * Initial release.
