@@ -76,6 +76,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
         
         // Cancel their last order.
         if ( ! empty( $order ) ) {
+            // This also triggers the cancellation email.
             $order->cancel();
         }
         
@@ -84,8 +85,14 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
         $sqlQuery = "UPDATE $wpdb->pmpro_memberships_users SET enddate = '" . esc_sql( $expiration_date ) . "' WHERE status = 'active' AND membership_id = '" . esc_sql( $level ) . "' AND user_id = '" . esc_sql( $user_id ) . "' LIMIT 1";
         $wpdb->query( $sqlQuery );
         
-        // Change the message shown on Cancel page.
-	    add_filter( 'gettext', 'pmproconpd_gettext_cancel_text', 10, 3 );
+        if ( is_page( $pmpro_pages['cancel'] ) ) {
+            // Change the message shown on Cancel page.
+    	    add_filter( 'gettext', 'pmproconpd_gettext_cancel_text', 10, 3 );
+        } else {
+            // Unset global in case other members expire, e.g. during expiration cron.
+            unset( $pmpro_next_payment_timestamp );
+        }
+        
     }
     
     return $level;
