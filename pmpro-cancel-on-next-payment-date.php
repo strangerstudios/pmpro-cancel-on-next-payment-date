@@ -19,8 +19,15 @@ function pmproconpd_load_text_domain() {
 add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
 
 /**
- * Before cancelling, save the next_payment_timestamp to a global for later use.
+ * Before cancelling, save the next_payment_timestamp to a global for later use. Useful to preserve the timestamp
+ * for the next scheduled payment (before it's removed/cancelled as part of the cancellation action)
  *
+ * @param int   $level_id     The ID of the membership level we're changing to for the user
+ * @param int   $user_id      The User ID we're changing membership information for
+ * @param array $old_levels   The previous level(s)
+ * @param int   $cancel_level The level being cancelled (if applicable)
+ *
+ * @global int  $pmpro_next_payment_timestamp - The UNIX epoch value for the next payment
  */
 function pmproconpd_pmpro_before_change_membership_level( $level_id, $user_id, $old_levels, $cancel_level ) {
 	global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp;
@@ -72,8 +79,10 @@ function pmproconpd_pmpro_before_change_membership_level( $level_id, $user_id, $
 add_action( 'pmpro_before_change_membership_level', 'pmproconpd_pmpro_before_change_membership_level', 10, 4 );
 
 /**
- * Give users their level back with an expiration.
+ * Give users their level back with an expiration (set to the last day of the subscription period).
  *
+ * @param int $level_id     The ID of the membership/subscription level they're currently at
+ * @param int $user_id      The ID of the user on this system
  */
 function pmproconpd_pmpro_after_change_membership_level( $level_id, $user_id ) {
 	global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp;
