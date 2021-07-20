@@ -197,7 +197,7 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 		if ( ! empty( $user_id ) ) {
 			// Is the date in the future?
 			if ( $pmpro_next_payment_timestamp - current_time( 'timestamp' ) > 0 ) {
-				$expiry_date = date( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+				$expiry_date = date_i18n( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
 				$body .= '<p>' . sprintf( __( 'Your access will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), $expiry_date ) . '</p>';
 			}
 		}
