@@ -21,6 +21,13 @@ add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
 /**
  * If the user has a payment coming up, don't cancel.
  * Instead update their expiration date and keep their level.
+ *
+ * @param int   $level_id     The ID of the membership level we're changing to for the user
+ * @param int   $user_id      The User ID we're changing membership information for
+ * @param array $old_levels   The previous level(s)
+ * @param int   $cancel_level The level being cancelled (if applicable)
+ *
+ * @global int  $pmpro_next_payment_timestamp - The UNIX epoch value for the next payment
  */
 function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $cancel_level ) {
     global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp;
@@ -135,7 +142,7 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 		if ( ! empty( $user_id ) ) {
 			// Is the date in the future?
 			if ( $pmpro_next_payment_timestamp - current_time( 'timestamp' ) > 0 ) {
-				$expiry_date = date( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+				$expiry_date = date_i18n( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
 				$body .= '<p>' . sprintf( __( 'Your access will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), $expiry_date ) . '</p>';
 			}
 		}
