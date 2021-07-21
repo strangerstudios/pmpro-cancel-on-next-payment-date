@@ -113,47 +113,61 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		$pmpro_next_payment_timestamp = pmpro_next_payment( $user_id );
 	}
 
-	// Are we extending?
-	if ( ! empty( $pmpro_next_payment_timestamp ) ) {
-		// Make sure they keep their level.
-		$level = $cancel_level;
+	/**
+	 * Allow filtering the next payment timestamp to cancel on based on gateway or any other customization.
+	 *
+	 * @since 0.4
+	 *
+	 * @param string|false $pmpro_next_payment_timestamp The next timestamp to cancel at (false to cancel right away).
+	 * @param string       $gateway                      The order gateway.
+	 * @param int          $level                        The membership level ID.
+	 * @param int          $user_id                      The member user ID.
+	 */
+	$pmpro_next_payment_timestamp = apply_filters( 'pmproconpd_next_payment_timestamp_to_cancel_on', $pmpro_next_payment_timestamp, $order->gateway, $level, $user_id );
 
-		// Cancel their last order.
-		if ( ! empty( $order ) ) {
-			// This also triggers the cancellation email.
-			$order->cancel();
-		}
+	// Bypass if we are not extending.
+	if ( false === $pmpro_next_payment_timestamp ) {
+		return $level;
+	}
 
-		// Update the expiration date.
-		$expiration_date = date( 'Y-m-d H:i:s', $pmpro_next_payment_timestamp );
+	// Make sure they keep their level.
+	$level = $cancel_level;
 
-		$wpdb->update(
-			$wpdb->pmpro_memberships_users,
-			[
-				'enddate' => $expiration_date,
-			],
-			[
-				'status'        => 'active',
-				'membership_id' => $level,
-				'user_id'       => $user_id,
-			],
-			[
-				'%s',
-			],
-			[
-				'%s',
-				'%d',
-				'%d',
-			]
-		);
+	// Cancel their last order.
+	if ( ! empty( $order ) ) {
+		// This also triggers the cancellation email.
+		$order->cancel();
+	}
 
-		if ( $is_on_cancel_page ) {
-			// Change the message shown on Cancel page.
-			add_filter( 'gettext', 'pmproconpd_gettext_cancel_text', 10, 3 );
-		} else {
-			// Unset global in case other members expire, e.g. during expiration cron.
-			unset( $pmpro_next_payment_timestamp );
-		}
+	// Update the expiration date.
+	$expiration_date = date( 'Y-m-d H:i:s', $pmpro_next_payment_timestamp );
+
+	$wpdb->update(
+		$wpdb->pmpro_memberships_users,
+		[
+			'enddate' => $expiration_date,
+		],
+		[
+			'status'        => 'active',
+			'membership_id' => $level,
+			'user_id'       => $user_id,
+		],
+		[
+			'%s',
+		],
+		[
+			'%s',
+			'%d',
+			'%d',
+		]
+	);
+
+	if ( $is_on_cancel_page ) {
+		// Change the message shown on Cancel page.
+		add_filter( 'gettext', 'pmproconpd_gettext_cancel_text', 10, 3 );
+	} else {
+		// Unset global in case other members expire, e.g. during expiration cron.
+		unset( $pmpro_next_payment_timestamp );
 	}
 
 	return $level;
