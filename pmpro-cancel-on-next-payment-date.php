@@ -37,6 +37,11 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	if ( 0 !== (int) $level ) {
 		return $level;
 	}
+	
+	// Bypass if cancelling due to an error, e.g. a payment was missed.
+	if ( 'error' === $old_level_status ) {
+		return $level;
+	}
 
 	$is_on_cancel_page = is_page( $pmpro_pages['cancel'] );
 	$is_on_profile_page = is_admin() && ( ! empty( $_REQUEST['from'] && 'profile' === $_REQUEST['from'] ) );
