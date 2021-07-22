@@ -81,9 +81,6 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	if ( empty( $check_level ) || ( ! empty( $check_level->enddate ) && '0000-00-00 00:00:00' !== $check_level->enddate ) ) {
 		// Level already has an end date. Set to false so we really cancel.
 		$pmpro_next_payment_timestamp = false;
-	} elseif ( 'error' === $old_level_status ) {
-		// There was an error which led to cancellation, go ahead and cancel right away.
-		$pmpro_next_payment_timestamp = false;
 	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {
 		$pmpro_next_payment_timestamp = PMProGateway_stripe::pmpro_next_payment( '', $user_id, 'success' );
 	} elseif ( ! empty( $order ) && 'paypalexpress' === $order->gateway ) {
