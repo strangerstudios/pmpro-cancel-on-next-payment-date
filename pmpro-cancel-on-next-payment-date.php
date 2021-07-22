@@ -229,7 +229,7 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 				WHERE `user_email` = %s
 				LIMIT 1
 			",
-			$email
+			$email->email
 		)
 	);
 
