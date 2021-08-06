@@ -247,6 +247,51 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 add_filter( 'pmpro_email_body', 'pmproconpd_pmpro_email_body', 10, 2 );
 
 /**
+ * Update the email data to set start and end date variables.
+ *
+ * @param array $data The current email template variable data.
+ * @param string $email The email being sent.
+ *
+ * @return array The updated email template variable data.
+ */
+function pmproconpd_pmpro_email_data( $data, $email ) {
+	global $pmpro_next_payment_timestamp;
+
+	// Double check that we have reinstated their membership through this Add On.
+	if ( empty( $pmpro_next_payment_timestamp ) ) {
+		return $data;
+	}
+
+	global $wpdb;
+
+	$user_id = $wpdb->get_var(
+		$wpdb->prepare( "
+				SELECT `ID`
+				FROM `{$wpdb->users}`
+				WHERE `user_email` = %s
+				LIMIT 1
+			",
+			$data['user_email']
+		)
+	);
+
+	// Bypass if no user ID found.
+	if ( empty( $user_id ) ) {
+		return $data;
+	}
+
+	// Set the !!startdate!! variable.
+	$membership_level = pmpro_getMembershipLevelForUser($user_id, true);
+	$data['startdate'] = date_i18n( get_option( 'date_format' ), $membership_level->startdate );
+
+	// Set the !!enddate!! variable.
+	$data['enddate'] = date_i18n( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+
+	return $data;
+}
+add_filter( 'pmpro_email_data', 'pmproconpd_pmpro_email_data', 10, 2 );
+
+/**
  * Function to add links to the plugin row meta.
  *
  * @param array  $links The list of plugin links.
