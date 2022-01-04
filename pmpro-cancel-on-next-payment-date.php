@@ -198,7 +198,7 @@ function pmproconpd_gettext_cancel_text( $translated_text, $text, $domain ) {
  * Update the cancellation email text so people know they'll still have access for a certain amount of time.
  *
  * @param string $body  The email body content.
- * @param string $email The email address this email will be sent to.
+ * @param PMProEmail $email The email template class.
  *
  * @return string The updated email body content.
  */
