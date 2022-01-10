@@ -23,10 +23,10 @@ add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
  * If the user has a payment coming up, don't cancel.
  * Instead update their expiration date and keep their level.
  *
- * @param int   $level            The ID of the membership level we're changing to for the user.
- * @param int   $user_id          The User ID we're changing membership information for.
- * @param array $old_level_status The status for the old level's change (if applicable).
- * @param int   $cancel_level     The level being cancelled (if applicable).
+ * @param int    $level            The ID of the membership level we're changing to for the user.
+ * @param int    $user_id          The User ID we're changing membership information for.
+ * @param string $old_level_status The status for the old level's change (if applicable).
+ * @param int    $cancel_level     The level being cancelled (if applicable).
  *
  * @global int $pmpro_next_payment_timestamp The UNIX epoch value for the next payment.
  */
