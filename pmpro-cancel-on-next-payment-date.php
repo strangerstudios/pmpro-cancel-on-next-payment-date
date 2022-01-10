@@ -43,6 +43,11 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		return $level;
 	}
 
+	// Bypass if we dont know which level is getting cancelled
+	if ( ! $cancel_level ) {
+		return $level;
+	}
+
 	$is_on_cancel_page = is_page( $pmpro_pages['cancel'] );
 	$is_on_profile_page = is_admin() && ( ! empty( $_REQUEST['from'] && 'profile' === $_REQUEST['from'] ) );
 
