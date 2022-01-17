@@ -48,7 +48,8 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 
 	// Bypass if not on cancellation page or a non-profile admin page.
 	// Webhook IPN calls that go through admin-ajax are non-profile admin pages.
-	if ( ! $is_on_cancel_page && ( ! is_admin() || $is_on_profile_page ) ) {
+	// Webhook IPN calls which are not going through admin-ajax can be detected with pmpro_doing_webhook()
+	if ( ! $is_on_cancel_page && ( ! is_admin() || $is_on_profile_page ) && ! pmpro_doing_webhook() ) {
 		return $level;
 	}
 
