@@ -85,7 +85,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		$pmpro_next_payment_timestamp = PMProGateway_stripe::pmpro_next_payment( '', $user_id, 'success' );
 	} elseif ( ! empty( $order ) && 'paypalexpress' === $order->gateway ) {
 		// Check the transaction type.
-		if ( ! empty( $_POST['txn_type'] ) && 'recurring_payment_failed' === $_POST['txn_type'] ) {
+		if ( ! empty( $_POST['txn_type'] ) && ( 'recurring_payment_failed' === $_POST['txn_type'] || 'recurring_payment_skipped' === $_POST['txn_type'] ) ) {
 			// Payment failed, so we're past due. No extension.
 			$pmpro_next_payment_timestamp = false;
 		} else {
