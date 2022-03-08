@@ -44,7 +44,13 @@ function pmproconpd_pmpro_member_action_links( $pmpro_member_action_links ) {
 
 	// consider paid recurring orders without an enddate
 	if ( ! empty( $morder->id ) && ! empty( $morder->subscription_transaction_id ) && empty( $morder->enddate ) ) {
-		$pmpro_member_action_links['cancel'] = sprintf( '<a id="pmpro_actionlink-cancel" href="%s">%s</a>', esc_url( add_query_arg( 'levelstocancel', $level->id, pmpro_url( 'cancel' ) ) ), esc_html__( 'Cancel auto-renew', 'pmpro-cancel-on-next-payment-date' ) );
+		$pmpro_member_action_links['cancel'] = sprintf(
+			'<a id="pmpro_actionlink-cancel" href="%s">%s</a>',
+			esc_url(
+				add_query_arg( 'levelstocancel', $level->id, pmpro_url( 'cancel' ) )
+			),
+			esc_html__( 'Cancel auto-renew', 'pmpro-cancel-on-next-payment-date' )
+		);
 	}
 
 	return $pmpro_member_action_links;
