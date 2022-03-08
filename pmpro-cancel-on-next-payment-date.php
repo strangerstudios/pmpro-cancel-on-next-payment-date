@@ -19,7 +19,7 @@ function pmproconpd_load_text_domain() {
 
 add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
 
-function pmproconpd_pmpro_member_action_links( $pmpro_member_action_links ) {
+function pmproconpd_change_cancel_button_text( $pmpro_member_action_links ) {
 	global $current_user;
 
 	// bail if cancel link has been removed by someone else
@@ -53,6 +53,8 @@ function pmproconpd_pmpro_member_action_links( $pmpro_member_action_links ) {
 
 	return $pmpro_member_action_links;
 }
+
+add_filter( 'pmpro_member_action_links', 'pmproconpd_change_cancel_button_text' );
 
 add_filter( 'pmpro_member_action_links', 'pmproconpd_pmpro_member_action_links' );
 
