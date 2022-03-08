@@ -47,7 +47,7 @@ function pmproconpd_change_cancel_button_text( $pmpro_member_action_links ) {
 		$pmpro_member_action_links['cancel'] = sprintf(
 			'<a id="pmpro_actionlink-cancel" href="%s">%s</a>',
 			esc_url( add_query_arg( 'levelstocancel', $level->id, pmpro_url( 'cancel' ) ) ),
-			esc_html__( 'Cancel auto-renew', 'pmpro-cancel-on-next-payment-date' )
+			esc_html__( 'Turn off auto-renew', 'pmpro-cancel-on-next-payment-date' )
 		);
 	}
 
