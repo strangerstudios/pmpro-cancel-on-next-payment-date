@@ -82,7 +82,13 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		// Level already has an end date. Set to false so we really cancel.
 		$pmpro_next_payment_timestamp = false;
 	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {
-		$pmpro_next_payment_timestamp = PMProGateway_stripe::pmpro_next_payment( '', $user_id, 'success' );
+		global $pmpro_stripe_event;
+		if ( 'charge.failed' === $pmpro_stripe_event->type ) {
+			// Payment failed, so we're past due. No extension.
+			$pmpro_next_payment_timestamp = false;
+		} else {
+			$pmpro_next_payment_timestamp = PMProGateway_stripe::pmpro_next_payment( '', $user_id, 'success' );
+		}
 	} elseif ( ! empty( $order ) && 'paypalexpress' === $order->gateway ) {
 		// Check the transaction type.
 		if ( ! empty( $_POST['txn_type'] ) && in_array( $_POST['txn_type'], [
