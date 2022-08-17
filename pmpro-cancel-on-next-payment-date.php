@@ -94,6 +94,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		} else {
 			// Use the built in PMPro function to guess next payment date.
 			$pmpro_next_payment_timestamp = pmpro_next_payment( $user_id );
+		}
 	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {		
 		if ( ! empty( $pmpro_stripe_event ) && 'charge.failed' === $pmpro_stripe_event->type ) {
 			// Payment failed, so we're past due. No extension.
