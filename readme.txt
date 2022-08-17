@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: pmpro, membership, cancellation
 Requires at least: 4.0
-Tested up to: 5.8
-Stable tag: 0.4
+Tested up to: 6.0.1
+Stable tag: 0.5
 
 Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
 
@@ -30,6 +30,20 @@ This is an official Add On for [Paid Memberships Pro](https://www.paidmembership
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues
 
 == Changelog ==
+= 0.5 - 2022-08-17 =
+* ENHANCEMENT: Internationalization for the date in the cancellation text string.
+* BUG FIX/ENHANCEMENT: Now correctly populating the !!startdate!! and !!enddate!! variables for use in the cancel or cancel_admin email templates.
+* BUG FIX/ENHANCEMENT: Fixed warnings related to non-int values being passed into the date() function.
+* BUG FIX/ENHANCEMENT: Now bailing if we can't figure out which level is being cancelled (happens sometimes with MMPU or when cancellations happen via webhook or custom code).
+* BUG FIX/ENHANCEMENT: No longer extending if the cancellation comes from a PayPal Express IPN notification RE failed/skipped payments.
+* BUG FIX/ENHANCEMENT: Added support for PayPal Standard. Better PayPal Express support.
+* BUG FIX/ENHANCEMENT: No longer extending if the cancellation comes from a Stripe webhook charge.failed event.
+* BUG FIX: Fixed code that determines if the user is on the cancel page or edit user/profile page in the admin, which is used in the cancellation logic.
+* REFACTOR: Updated doc blocks.
+* REFACTOR: Removed some unused code.
+
+
+
 = 0.4 - 2021-07-28 =
 * NOTE: This version requires PMPro version 2.5.8 or higher.
 * BUG FIX/ENHANCEMENT: Uses the new pmpro_change_level filter to keep the user's level from changing ever. Their order and subsciptions are cancelled and their expiration date is set up, but the pmpro_before_change_membership_level and pmpro_after_change_membership_level will not fire. This prevents issues with other code hooked into membership level changes.
