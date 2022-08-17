@@ -87,6 +87,13 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	if ( empty( $check_level ) || ( ! empty( $check_level->enddate ) && '0000-00-00 00:00:00' !== $check_level->enddate ) ) {
 		// Level already has an end date. Set to false so we really cancel.
 		$pmpro_next_payment_timestamp = false;
+	} elseif ( ! empty( $order ) && 'paypalstandard' === $order->gateway ) {
+		if ( ! empty( $_POST['txn_type'] ) && 'subscr_failed' === $_POST['txn_type'] ) {
+			// Payment failed, so we're past due. No extension.
+			$pmpro_next_payment_timestamp = false;
+		} else {
+			// Use the built in PMPro function to guess next payment date.
+			$pmpro_next_payment_timestamp = pmpro_next_payment( $user_id );
 	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {		
 		if ( ! empty( $pmpro_stripe_event ) && 'charge.failed' === $pmpro_stripe_event->type ) {
 			// Payment failed, so we're past due. No extension.
@@ -99,6 +106,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		if ( ! empty( $_POST['txn_type'] ) && in_array( $_POST['txn_type'], [
 				'recurring_payment_failed',
 				'recurring_payment_skipped',
+				'recurring_payment_suspended',
 				'recurring_payment_suspended_due_to_max_failed_payment'
 			] ) ) {
 			// Payment failed, so we're past due. No extension.
