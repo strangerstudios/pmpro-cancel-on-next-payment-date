@@ -143,7 +143,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	}
 
 	// Update the expiration date.
-	$expiration_date = date( 'Y-m-d H:i:s', $pmpro_next_payment_timestamp );
+	$expiration_date = date( 'Y-m-d H:i:s', intval( $pmpro_next_payment_timestamp ) );
 
 	$wpdb->update(
 		$wpdb->pmpro_memberships_users,
@@ -198,7 +198,7 @@ function pmproconpd_gettext_cancel_text( $translated_text, $text, $domain ) {
 		global $current_user;
 
 		// translators: %s: The date the subscription will expire on.
-		$translated_text = sprintf( __( 'Your recurring subscription has been cancelled. Your active membership will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), date( get_option( 'date_format' ), $pmpro_next_payment_timestamp ) );
+		$translated_text = sprintf( __( 'Your recurring subscription has been cancelled. Your active membership will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), date( get_option( 'date_format' ), intval( $pmpro_next_payment_timestamp ) ) );
 	}
 
 	return $translated_text;
@@ -246,7 +246,7 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 		return $body;
 	}
 
-	$expiry_date = date_i18n( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+	$expiry_date = date_i18n( get_option( 'date_format' ), intval( $pmpro_next_payment_timestamp ) );
 
 	// translators: %s: The date that access will expire on.
 	$body .= '<p>' . sprintf( __( 'Your access will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), $expiry_date ) . '</p>';
@@ -292,10 +292,10 @@ function pmproconpd_pmpro_email_data( $data, $email ) {
 
 	// Set the !!startdate!! variable.
 	$membership_level = pmpro_getMembershipLevelForUser($user_id, true);
-	$data['startdate'] = date_i18n( get_option( 'date_format' ), $membership_level->startdate );
+	$data['startdate'] = date_i18n( get_option( 'date_format' ), intval( $membership_level->startdate ) );
 
 	// Set the !!enddate!! variable.
-	$data['enddate'] = date_i18n( get_option( 'date_format' ), $pmpro_next_payment_timestamp );
+	$data['enddate'] = date_i18n( get_option( 'date_format' ), intval( $pmpro_next_payment_timestamp ) );
 
 	return $data;
 }
