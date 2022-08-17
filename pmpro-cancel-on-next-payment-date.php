@@ -31,7 +31,7 @@ add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
  * @global int $pmpro_next_payment_timestamp The UNIX epoch value for the next payment.
  */
 function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $cancel_level ) {
-	global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp;
+	global $pmpro_pages, $wpdb, $pmpro_next_payment_timestamp, $pmpro_stripe_event;
 
 	// Bypass if not level 0.
 	if ( 0 !== (int) $level ) {
@@ -87,9 +87,8 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	if ( empty( $check_level ) || ( ! empty( $check_level->enddate ) && '0000-00-00 00:00:00' !== $check_level->enddate ) ) {
 		// Level already has an end date. Set to false so we really cancel.
 		$pmpro_next_payment_timestamp = false;
-	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {
-		global $pmpro_stripe_event;
-		if ( 'charge.failed' === $pmpro_stripe_event->type ) {
+	} elseif ( ! empty( $order ) && 'stripe' === $order->gateway ) {		
+		if ( ! empty( $pmpro_stripe_event ) && 'charge.failed' === $pmpro_stripe_event->type ) {
 			// Payment failed, so we're past due. No extension.
 			$pmpro_next_payment_timestamp = false;
 		} else {
