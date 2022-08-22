@@ -210,7 +210,7 @@ function pmproconpd_gettext_cancel_text( $translated_text, $text, $domain ) {
 
 	if ( ( 'pmpro' === $domain || 'paid-memberships-pro' === $domain ) && 'Your membership has been cancelled.' === $text ) {
 		// translators: %s: The date the subscription will expire on.
-		$translated_text = sprintf( __( 'Your recurring subscription has been cancelled. Your active membership will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), date( get_option( 'date_format' ), intval( $pmpro_next_payment_timestamp ) ) );
+		$translated_text = sprintf( __( 'Your recurring subscription has been cancelled. Your active membership will expire on %s.', 'pmpro-cancel-on-next-payment-date' ), date_i18n( get_option( 'date_format' ), intval( $pmpro_next_payment_timestamp ) ) );
 	}
 
 	return $translated_text;
