@@ -3,7 +3,7 @@
  Plugin Name: Paid Memberships Pro - Cancel on Next Payment Date
  Plugin URI: https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date
  Description: Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
- Version: 0.5
+ Version: 0.5.1
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
  Text Domain: pmpro-cancel-on-next-payment-date

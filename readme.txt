@@ -3,7 +3,7 @@ Contributors: strangerstudios
 Tags: pmpro, membership, cancellation
 Requires at least: 4.0
 Tested up to: 6.0.1
-Stable tag: 0.5
+Stable tag: 0.5.1
 
 Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
 
@@ -30,6 +30,9 @@ This is an official Add On for [Paid Memberships Pro](https://www.paidmembership
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues
 
 == Changelog ==
+= 0.5.1 - 2022-08-22 =
+* ENHANCEMENT: Internationalization for the date in the cancellation text string. (This was accidentally left out of the last update.)
+
 = 0.5 - 2022-08-17 =
 * ENHANCEMENT: Internationalization for the date in the cancellation text string.
 * BUG FIX/ENHANCEMENT: Now correctly populating the !!startdate!! and !!enddate!! variables for use in the cancel or cancel_admin email templates.
