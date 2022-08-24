@@ -19,6 +19,45 @@ function pmproconpd_load_text_domain() {
 
 add_action( 'plugins_loaded', 'pmproconpd_load_text_domain' );
 
+function pmproconpd_change_cancel_button_text( $pmpro_member_action_links ) {
+	global $current_user;
+
+	// bail if cancel link has been removed by someone else
+	if ( ! isset( $pmpro_member_action_links['cancel'] ) ) {
+		return $pmpro_member_action_links;
+	}
+
+	// get current user level
+	$level = pmpro_getMembershipLevelForUser( $current_user->ID );
+
+	// bail if not a recurring level
+	if ( ! pmpro_isLevelRecurring( $level ) ) {
+		return $pmpro_member_action_links;
+	}
+
+	$morder = new MemberOrder();
+	// guess the order which triggered the current user level
+	// TODO use subs table to define if the subs is still active.
+	// atm there's no way to know if a refunded order is for an active sub at gateway.
+	// it's better to assume that only orders in status "success" are still active at gateway.
+	$morder->getLastMemberOrder( $current_user->ID, 'success', $level->id );
+
+	// consider paid recurring orders without an enddate
+	if ( ! empty( $morder->id ) && ! empty( $morder->subscription_transaction_id ) && empty( $morder->enddate ) ) {
+		$pmpro_member_action_links['cancel'] = sprintf(
+			'<a id="pmpro_actionlink-cancel" href="%s">%s</a>',
+			esc_url( add_query_arg( 'levelstocancel', $level->id, pmpro_url( 'cancel' ) ) ),
+			esc_html__( 'Turn off auto-renew', 'pmpro-cancel-on-next-payment-date' )
+		);
+	}
+
+	return $pmpro_member_action_links;
+}
+
+add_filter( 'pmpro_member_action_links', 'pmproconpd_change_cancel_button_text' );
+
+add_filter( 'pmpro_member_action_links', 'pmproconpd_pmpro_member_action_links' );
+
 /**
  * If the user has a payment coming up, don't cancel.
  * Instead update their expiration date and keep their level.
