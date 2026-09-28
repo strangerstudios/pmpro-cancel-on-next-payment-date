@@ -1,61 +1,68 @@
-# Copyright (C) 2022 Paid Memberships Pro
+# Copyright (C) 2026 Paid Memberships Pro
 # This file is distributed under the same license as the Paid Memberships Pro - Cancel on Next Payment Date plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Paid Memberships Pro - Cancel on Next Payment Date 0.5\n"
+"Project-Id-Version: Paid Memberships Pro - Cancel on Next Payment Date 0.5.2\n"
 "Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
 "Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-08-17T21:38:34+00:00\n"
+"POT-Creation-Date: 2026-09-28T18:19:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: pmpro-cancel-on-next-payment-date\n"
 
 #. Plugin Name of the plugin
+#: pmpro-cancel-on-next-payment-date.php
 msgid "Paid Memberships Pro - Cancel on Next Payment Date"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: pmpro-cancel-on-next-payment-date.php
 msgid "https://www.paidmembershipspro.com/add-ons/cancel-on-next-payment-date"
 msgstr ""
 
 #. Description of the plugin
+#: pmpro-cancel-on-next-payment-date.php
 msgid "Change membership cancellation to set expiration date for next payment instead of cancelling immediately."
 msgstr ""
 
 #. Author of the plugin
+#: pmpro-cancel-on-next-payment-date.php
 msgid "Paid Memberships Pro"
 msgstr ""
 
 #. Author URI of the plugin
+#: pmpro-cancel-on-next-payment-date.php
 msgid "https://www.paidmembershipspro.com"
 msgstr ""
 
 #. translators: %s: The date the subscription will expire on.
-#: pmpro-cancel-on-next-payment-date.php:213
+#: pmpro-cancel-on-next-payment-date.php:224
+#, php-format
 msgid "Your recurring subscription has been cancelled. Your active membership will expire on %s."
 msgstr ""
 
 #. translators: %s: The date that access will expire on.
-#: pmpro-cancel-on-next-payment-date.php:264
+#: pmpro-cancel-on-next-payment-date.php:276
+#, php-format
 msgid "Your access will expire on %s."
 msgstr ""
 
-#: pmpro-cancel-on-next-payment-date.php:333
+#: pmpro-cancel-on-next-payment-date.php:346
 msgid "View Documentation"
 msgstr ""
 
-#: pmpro-cancel-on-next-payment-date.php:334
+#: pmpro-cancel-on-next-payment-date.php:347
 msgid "Docs"
 msgstr ""
 
-#: pmpro-cancel-on-next-payment-date.php:340
+#: pmpro-cancel-on-next-payment-date.php:353
 msgid "Visit Customer Support Forum"
 msgstr ""
 
-#: pmpro-cancel-on-next-payment-date.php:341
+#: pmpro-cancel-on-next-payment-date.php:354
 msgid "Support"
 msgstr ""
