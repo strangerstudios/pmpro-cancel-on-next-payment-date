@@ -2,8 +2,8 @@
 Contributors: strangerstudios
 Tags: pmpro, membership, cancellation
 Requires at least: 4.0
-Tested up to: 6.0.1
-Stable tag: 0.5.1
+Tested up to: 7.1
+Stable tag: 0.5.2
 
 Change membership cancellation to set expiration date for next payment instead of cancelling immediately.
 
@@ -30,6 +30,11 @@ This is an official Add On for [Paid Memberships Pro](https://www.paidmembership
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-cancel-on-next-payment-date/issues
 
 == Changelog ==
+= 0.5.2 - 2026-09-28 =
+* SECURITY: The PayPal Express next payment date is now only read from validated PayPal IPN requests. #47 (@dparker1005)
+* SECURITY: Added direct file access protection. #46 (@dparker1005)
+* ENHANCEMENT: Resolved Plugin Check security warnings. #46 (@dparker1005)
+
 = 0.5.1 - 2022-08-22 =
 * ENHANCEMENT: Internationalization for the date in the cancellation text string. (This was accidentally left out of the last update.)
 
