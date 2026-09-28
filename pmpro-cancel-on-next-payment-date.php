@@ -10,6 +10,10 @@
  Domain Path: /languages
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Load plugin textdomain.
  */
@@ -49,7 +53,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	}
 
 	$is_on_cancel_page = is_page( $pmpro_pages['cancel'] );
-	$is_on_profile_page = is_admin() && ( ! empty( $_REQUEST['from'] ) && 'profile' === $_REQUEST['from'] );
+	$is_on_profile_page = is_admin() && ( ! empty( $_REQUEST['from'] ) && 'profile' === $_REQUEST['from'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing check.
 
 	// Bypass if not on cancellation page or a non-profile admin page.
 	// Webhook IPN calls that go through admin-ajax are non-profile admin pages.
@@ -67,6 +71,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 
 	// Get level to check if it already has an end date.
 	if ( ! empty( $order ) && ! empty( $order->membership_id ) ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- PMPro custom table; prepared query.
 		$check_level = $wpdb->get_row(
 			$wpdb->prepare( "
 					SELECT *
@@ -83,6 +88,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		);
 	}
 
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- Reached from gateway IPN/webhook requests, the cancel page and admin level changes. next_payment_date is only trusted from the PayPal IPN, which core validates with PayPal (services/ipnhandler.php). A posted txn_type can only cancel immediately.
 	// Figure out the next payment timestamp.
 	if ( empty( $check_level ) || ( ! empty( $check_level->enddate ) && '0000-00-00 00:00:00' !== $check_level->enddate ) ) {
 		// Level already has an end date. Set to false so we really cancel.
@@ -109,7 +115,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 				'recurring_payment_skipped',
 				'recurring_payment_suspended',
 				'recurring_payment_suspended_due_to_max_failed_payment'
-			] ) ) {
+			], true ) ) {
 			// Payment failed, so we're past due. No extension.
 			$pmpro_next_payment_timestamp = false;
 		} else {
@@ -119,7 +125,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 			// Check the next payment date passed in or via API.
 			if ( $is_paypal_ipn && ! empty( $_POST['next_payment_date'] ) && 'N/A' !== $_POST['next_payment_date'] ) {
 				// Cancellation is being initiated from the IPN.
-				$pmpro_next_payment_timestamp = strtotime( $_POST['next_payment_date'], current_time( 'timestamp' ) );
+				$pmpro_next_payment_timestamp = strtotime( sanitize_text_field( wp_unslash( $_POST['next_payment_date'] ) ), current_time( 'timestamp' ) );
 			} elseif ( $is_paypal_ipn && ! empty( $_POST['next_payment_date'] ) && 'N/A' === $_POST['next_payment_date'] ) {
 				// Use the built in PMPro function to guess next payment date.
 				$pmpro_next_payment_timestamp = pmpro_next_payment( $user_id );
@@ -132,6 +138,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 		// Use the built in PMPro function to guess next payment date.
 		$pmpro_next_payment_timestamp = pmpro_next_payment( $user_id );
 	}
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 	/**
 	 * Allow filtering the next payment timestamp to cancel on based on gateway or any other customization.
@@ -162,6 +169,7 @@ function pmproconpd_pmpro_change_level( $level, $user_id, $old_level_status, $ca
 	// Update the expiration date.
 	$expiration_date = date( 'Y-m-d H:i:s', intval( $pmpro_next_payment_timestamp ) );
 
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- PMPro custom table; $wpdb->update() escapes values.
 	$wpdb->update(
 		$wpdb->pmpro_memberships_users,
 		[
@@ -240,6 +248,7 @@ function pmproconpd_pmpro_email_body( $body, $email ) {
 
 	global $wpdb;
 
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Prepared query; one-off lookup.
 	$user_id = $wpdb->get_var(
 		$wpdb->prepare( "
 				SELECT `ID`
@@ -289,6 +298,7 @@ function pmproconpd_pmpro_email_data( $data, $email ) {
 
 	global $wpdb;
 
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Prepared query; one-off lookup.
 	$user_id = $wpdb->get_var(
 		$wpdb->prepare( "
 				SELECT `ID`
